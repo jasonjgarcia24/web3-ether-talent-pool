@@ -199,16 +199,6 @@ account = generate_account()
 # Write the returned ether balance to the sidebar
 balance = get_balance(account.address)
 
-table_data = f"""
-<div class='client-container'>
-    <h2 class='sidebar-subtitle' font='size:72px'>Client</h2>
-    <div class='client-info-container'>
-        <p class='client-info-address'><b>Address: </b>{get_address_html(account.address)}</p>
-        <p class='client-info-balance'><b>Balance: </b>{get_balance(account.address):.4f} (ETH)</p>
-    </div>
-</div>
-"""
-
 style_kwargs = dict(
     color="#122221",
     font_size="14px",
@@ -244,7 +234,7 @@ with st.container():
     candidate = candidate_database[person][0]
 
     # Write the Fintech Finder candidate's name to the sidebar
-    st.sidebar.markdown(f"## {candidate}'s Info:")
+    st.sidebar.markdown(f"<p class='candidate-info-header'>{candidate}'s Info:</p>", unsafe_allow_html=True)
 
     # Identify the FinTech Finder candidate's ethereum address, rating, and hourly rate
     candidate_address     = candidate_database[person][1]
@@ -319,7 +309,7 @@ wage = candidate_database[person][3] * hours
 
 # @TODO
 # Write the `wage` calculation to the Streamlit sidebar
-st.sidebar.markdown(f"<p class='wage-text'><strong>Total Wage</strong>: {wage:.4f} (ETH)</p>", unsafe_allow_html=True)
+st.sidebar.markdown(f"<p class='wage-text' style='text-align:center'><strong>Total Wage</strong>: {wage:.4f} (ETH)</p>", unsafe_allow_html=True)
 
 ##########################################
 # Step 2 - Part 2:
@@ -344,25 +334,28 @@ if st.sidebar.button("Send Transaction 🤝🏽"):
     # Call the `send_transaction` function and pass it 3 parameters:
     # Your `account`, the `candidate_address`, and the `wage` as parameters
     # Save the returned transaction hash as a variable named `transaction_hash`
-    transaction_hash = send_transaction(account, candidate_address, wage).hex()
+    try:
+        transaction_hash = send_transaction(account, candidate_address, wage).hex()
 
-    # Markdown for the transaction hash
-    with st.sidebar:        
-        _copycontent_button(
-            str=get_condense_address(transaction_hash),
-            lead_str="Transaction Hash:",
-            copy_str=transaction_hash,
-            href=get_address_html(transaction_hash, condense=False, html=False, type="tx"),
-            font_size="16px",
-            font_weight="none",
-            color="#122221",
-            padding="0",
-            margin="0px 0px 0px 0px",
-            background="none",
-        )
+        # Markdown for the transaction hash
+        with st.sidebar:        
+            _copycontent_button(
+                str=get_condense_address(transaction_hash),
+                lead_str="Transaction Hash:",
+                copy_str=transaction_hash,
+                href=get_address_html(transaction_hash, condense=False, html=False, type="tx"),
+                font_size="16px",
+                font_weight="none",
+                color="#122221",
+                padding="0",
+                margin="0",
+                background="none",
+            )
 
-    # Celebrate your successful payment
-    st.balloons()
+        # Celebrate your successful payment
+        st.balloons()
+    except Exception as e:
+        print(e)
 
 # The function that starts the Streamlit application
 # Writes FinTech Finder candidates to the Streamlit page

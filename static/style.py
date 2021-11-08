@@ -5,6 +5,10 @@ def set_style():
     st.markdown(
         """
         <style>
+        p {
+            color: #122221;
+        }
+
         .page-header {
             color: black;
             margin: 0;
@@ -36,26 +40,34 @@ def set_style():
         }
 
         .expander-p {
-            color: #122221;
             font-size: 16px;
+            align-content: left;
         }
 
         .wage-text {
-            color: #122221;
-            font-size: 22px;
+            font-size: 18px;
             margin: 5px 0 20px 0;
         }
 
-        div.stSelectbox {
+        .candidate-info-header {
+            font-size: 14px;
+            text-align: left;
         }
 
-        div.stContainer {
-            background: orange;
+        div.stMarkdown {
+            margin: 0;
+            padding: 0;
+        }
+
+        div.stButton {
+            display: flex;
         }
 
         div.stButton > button:first-child {
             color: white;
-            background-color: rgb(204, 49, 49);
+            background: rgb(204, 49, 49);
+            width: 170px;
+            margin: 0 auto;
         }
 
         </style>

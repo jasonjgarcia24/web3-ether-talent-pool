@@ -67,7 +67,7 @@ def send_transaction(account, to, wage):
         "value":    value,
         "gas":      gasEstimate,
         "gasPrice": w3.eth.generateGasPrice(),
-        "nonce":    w3.eth.getTransactionCount(account.address)
+        "nonce":    w3.eth.getTransactionCount(account.address),
     }
 
     # Sign the raw transaction with ethereum account
