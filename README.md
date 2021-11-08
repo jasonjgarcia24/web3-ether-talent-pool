@@ -42,7 +42,6 @@ The layout for this project is show below.
 ├── SAMPLE.env<br>
 ├── setup.py<br>
 ├── static<br>
-│   ├── fintech-01.jpg<br>
 │   └── style.py<br>
 ├── streamlit_custom_components<br>
 │   ├── copycontent_button<br>

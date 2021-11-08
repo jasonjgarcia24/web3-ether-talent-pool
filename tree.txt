@@ -18,7 +18,6 @@
 ├── SAMPLE.env
 ├── setup.py
 ├── static
-│   ├── fintech-01.jpg
 │   └── style.py
 ├── streamlit_custom_components
 │   ├── copycontent_button
