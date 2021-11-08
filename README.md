@@ -21,7 +21,7 @@ This project utilizes the Python library <a href="https://web3py.readthedocs.io/
 The Fintech Finder page is generated with the <a href="https://streamlit.io/" target="_blank">streamlit</a> web app framework to provide an accurate and responsive utility for selecting talent.
 
 #### Project layout:
-The layout of essentials for this project is show below.
+The layout for this project is show below.
 .<br>
 ├── .env<br>
 ├── crypto_wallet.py<br>
