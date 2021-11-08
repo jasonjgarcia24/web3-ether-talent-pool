@@ -29,6 +29,9 @@
 import streamlit as st
 import streamlit.components.v1 as components
 
+from streamlit_custom_components.copycontent_button   import _copycontent_button
+from streamlit_custom_components.crypto_account_stack import _crypto_account_stack
+
 from dataclasses import dataclass
 from typing      import Any, List
 
@@ -87,6 +90,14 @@ from crypto_wallet import (
     send_transaction
 )
 
+
+import base64
+
+from static.style import set_style
+
+
+set_style()
+
 ################################################################################
 # Fintech Finder Candidate Information
 
@@ -103,32 +114,67 @@ candidate_database = {
 people = list(candidate_database.keys())
 
 
+def get_condense_address(address):
+    return f"{address[:5]}...{address[-4:]}"
+
+
+def get_address_html(address, condense=True, html=True, type="address"):
+    if condense:
+        address_text = get_condense_address(address)
+    else:
+        address_text = address
+
+    if html:
+        return f"<a href='https://kovan.etherscan.io/{type}/{address}' target='_blank'>{address_text}</a>"
+    else:
+        return f"https://kovan.etherscan.io/{type}/{address_text}"
+
+
 def get_people():
     """Display the database of Fintech Finders candidate information."""
     db_list = list(candidate_database.values())
 
     for number in range(len(people)):
-        st.image(db_list[number][4], width=200)
+        name    = db_list[number][0]
+        address = db_list[number][1]
+        rating  = db_list[number][2]
+        rate    = db_list[number][3]
+        image   = base64.b64encode(open(db_list[number][4], 'rb').read()).decode()
 
-        st.write("Name: ",                     db_list[number][0])
-        st.write("Ethereum Account Address: ", db_list[number][1])
-        st.write("FinTech Finder Rating: ",    db_list[number][2])
-        st.write("Hourly Rate per Ether: ",    db_list[number][3], "eth")
+        with st.expander(name):
+            st.markdown(f"<img class='professional-photo' src='data:image/png;base64,{image}'><br>", unsafe_allow_html=True)
 
-        st.text(" \n")
+            _copycontent_button(
+                str=address,
+                lead_str="Ethereum Account Address:",
+                copy_str=address,
+                href=get_address_html(address),
+                key=f"{name}-{address}",
+                font_size="16px",
+                font_weight="none",
+                color="#122221",
+                padding="0",
+                margin="0px 0px 0px 0px",
+                background="none",
+            )
+
+            st.markdown(f"<p class='expander-p'>Fintech Finder Rating: {rating}</p>"  , unsafe_allow_html=True)
+            st.markdown(f"<p class='expander-p'>Hourly Rate per Ether: {rate} ETH</p>", unsafe_allow_html=True)
+
 
 ################################################################################
 # Streamlit Code
 
 # Streamlit application headings
-st.markdown("# Fintech Finder!")
-st.markdown("## Hire A Fintech Professional!")
-st.text(" \n")
+page_title    = f"<h1 class='page-header'>🕵️ <span class='fintech-span'>Fintech</span> Finder 👩‍💻</h1>"
+page_subtitle = f"<h2 class='page-subheader'>Hire A Fintech Professional!</h2>"
+page_header   = f"<div><header>{page_title}{page_subtitle}</header></div>"
+
+st.markdown(page_header, unsafe_allow_html=True)
 
 ################################################################################
 # Streamlit Sidebar Code - Start
-
-st.sidebar.markdown("## Client Account Address and Ethernet Balance in Ether")
+# st.sidebar.markdown("## Client Account Address and Ethernet Balance in Ether")
 
 ##########################################
 # Step 1 - Part 4:
@@ -142,9 +188,6 @@ account = generate_account()
 
 ##########################################
 
-# Write the client's Ethereum account address to the sidebar
-st.sidebar.write(account.address)
-
 ##########################################
 # Step 1 - Part 5:
 # Define a new `st.sidebar.write` function that will display the balance of the
@@ -154,39 +197,66 @@ st.sidebar.write(account.address)
 # @TODO
 # Call `get_balance` function and pass it your account address
 # Write the returned ether balance to the sidebar
-st.sidebar.write(get_balance(account.address))
+balance = get_balance(account.address)
+
+table_data = f"""
+<div class='client-container'>
+    <h2 class='sidebar-subtitle' font='size:72px'>Client</h2>
+    <div class='client-info-container'>
+        <p class='client-info-address'><b>Address: </b>{get_address_html(account.address)}</p>
+        <p class='client-info-balance'><b>Balance: </b>{get_balance(account.address):.4f} (ETH)</p>
+    </div>
+</div>
+"""
+
+style_kwargs = dict(
+    color="#122221",
+    font_size="14px",
+    width="100%",
+    padding="0px",
+    margin="0 auto",
+    text_align="center",
+    background="none",
+)
+
+with st.sidebar:
+    _crypto_account_stack(
+        header_str="Client",
+        address_str_val=get_condense_address(account.address),
+        address_str_hdr="Address:",
+        balance_str_val=f"{get_balance(account.address):.4f}",
+        balance_str_unit="ETH",
+        balance_str_hdr="Balance:",
+        copy_str=account.address,
+        href=get_address_html(account.address, condense=False, html=False),
+        **style_kwargs,
+    )
 
 ##########################################
+with st.container():
+    # Create a select box to chose a FinTech Hire candidate
+    person = st.sidebar.selectbox('Select a Person', people)
 
-# Create a select box to chose a FinTech Hire candidate
-person = st.sidebar.selectbox('Select a Person', people)
+    # Create a input field to record the number of hours the candidate worked
+    hours = st.sidebar.number_input("Number of Hours")
 
-# Create a input field to record the number of hours the candidate worked
-hours = st.sidebar.number_input("Number of Hours")
+    # Identify the FinTech Hire candidate
+    candidate = candidate_database[person][0]
 
-st.sidebar.markdown("## Candidate Name, Hourly Rate, and Ethereum Address")
+    # Write the Fintech Finder candidate's name to the sidebar
+    st.sidebar.markdown(f"## {candidate}'s Info:")
 
-# Identify the FinTech Hire candidate
-candidate = candidate_database[person][0]
+    # Identify the FinTech Finder candidate's ethereum address, rating, and hourly rate
+    candidate_address     = candidate_database[person][1]
+    candidate_rating      = candidate_database[person][2]
+    candidate_hourly_rate = candidate_database[person][3]
 
-# Write the Fintech Finder candidate's name to the sidebar
-st.sidebar.write(candidate)
+    # Write the Fintech Finder candidate's ethereum address, rating, and hourly rate
+    table_header = "|Address|Rating|Hourly Rate (ETH)|\n"
+    table_sep    = "|:---:  |:---: |:---:            |\n"
+    table_data   = f"|{get_address_html(candidate_address)}|{candidate_rating}|{candidate_hourly_rate}\n<br>"
 
-# Identify the FinTech Finder candidate's hourly rate
-hourly_rate = candidate_database[person][3]
-
-# Write the inTech Finder candidate's hourly rate to the sidebar
-st.sidebar.write(hourly_rate)
-
-# Identify the FinTech Finder candidate's Ethereum Address
-candidate_address = candidate_database[person][1]
-
-# Write the inTech Finder candidate's Ethereum Address to the sidebar
-st.sidebar.write(candidate_address)
-
-# Write the Fintech Finder candidate's name to the sidebar
-
-st.sidebar.markdown("## Total Wage in Ether")
+    st.sidebar.markdown(table_header + table_sep + table_data, unsafe_allow_html=True)
 
 ################################################################################
 # Step 2: Sign and Execute a Payment Transaction
@@ -249,7 +319,7 @@ wage = candidate_database[person][3] * hours
 
 # @TODO
 # Write the `wage` calculation to the Streamlit sidebar
-st.sidebar.write(wage)
+st.sidebar.markdown(f"<p class='wage-text'><strong>Total Wage</strong>: {wage:.4f} (ETH)</p>", unsafe_allow_html=True)
 
 ##########################################
 # Step 2 - Part 2:
@@ -268,28 +338,37 @@ st.sidebar.write(wage)
 # * Save the transaction hash that the `send_transaction` function returns as a
 # variable named `transaction_hash`, and have it display on the application’s
 # web interface.
-
-
-if st.sidebar.button("Send Transaction"):
+if st.sidebar.button("Send Transaction 🤝🏽"):
 
     # @TODO
     # Call the `send_transaction` function and pass it 3 parameters:
     # Your `account`, the `candidate_address`, and the `wage` as parameters
     # Save the returned transaction hash as a variable named `transaction_hash`
-    transaction_hash = send_transaction(account, candidate_address, wage)
+    transaction_hash = send_transaction(account, candidate_address, wage).hex()
 
     # Markdown for the transaction hash
-    st.sidebar.markdown("#### Validated Transaction Hash")
-
-    # Write the returned transaction hash to the screen
-    st.sidebar.write(transaction_hash)
+    with st.sidebar:        
+        _copycontent_button(
+            str=get_condense_address(transaction_hash),
+            lead_str="Transaction Hash:",
+            copy_str=transaction_hash,
+            href=get_address_html(transaction_hash, condense=False, html=False, type="tx"),
+            font_size="16px",
+            font_weight="none",
+            color="#122221",
+            padding="0",
+            margin="0px 0px 0px 0px",
+            background="none",
+        )
 
     # Celebrate your successful payment
     st.balloons()
 
 # The function that starts the Streamlit application
 # Writes FinTech Finder candidates to the Streamlit page
+st.text(" \n")
 get_people()
+
 
 ################################################################################
 # Step 3: Inspect the Transaction on Etherscan
