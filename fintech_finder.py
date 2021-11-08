@@ -27,13 +27,9 @@
 ################################################################################
 # Imports
 import streamlit as st
-import streamlit.components.v1 as components
 
 from streamlit_custom_components.copycontent_button   import _copycontent_button
 from streamlit_custom_components.crypto_account_stack import _crypto_account_stack
-
-from dataclasses import dataclass
-from typing      import Any, List
 
 ################################################################################
 # Step 1:
@@ -89,7 +85,6 @@ from crypto_wallet import (
     get_balance,
     send_transaction
 )
-
 
 import base64
 

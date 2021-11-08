@@ -1,0 +1,62 @@
+.
+├── .env
+├── crypto_wallet.py
+├── fintech_finder.py
+├── img
+│   ├── 19-0-infura-sign-up.png
+│   ├── ash.jpeg
+│   ├── client-etherscan-kovan.png
+│   ├── jo.jpeg
+│   ├── kendall.jpeg
+│   ├── lane-etherscan-kovan.png
+│   ├── lane.jpeg
+│   ├── transaction-etherscan-kovan.png
+│   └── web-app.png
+├── LICENSE
+├── README.md
+├── requirements.txt
+├── SAMPLE.env
+├── setup.py
+├── static
+│   ├── fintech-01.jpg
+│   └── style.py
+├── streamlit_custom_components
+│   ├── copycontent_button
+│   │   ├── frontend
+│   │   │   └── build
+│   │   │       ├── asset-manifest.json
+│   │   │       ├── bootstrap.min.css
+│   │   │       ├── index.html
+│   │   │       ├── precache-manifest.7d28d4f1dd06fe1528c46b815edd1fb6.js
+│   │   │       ├── service-worker.js
+│   │   │       └── static
+│   │   │           └── js
+│   │   │               ├── 2.bd9b94bf.chunk.js
+│   │   │               ├── 2.bd9b94bf.chunk.js.LICENSE.txt
+│   │   │               ├── 2.bd9b94bf.chunk.js.map
+│   │   │               ├── main.5ac0fb29.chunk.js
+│   │   │               ├── main.5ac0fb29.chunk.js.map
+│   │   │               ├── runtime-main.547c5a5e.js
+│   │   │               └── runtime-main.547c5a5e.js.map
+│   │   ├── test.py
+│   │   └── __init__.py
+│   └── crypto_account_stack
+│       ├── frontend
+│       │   └── build
+│       │       ├── asset-manifest.json
+│       │       ├── bootstrap.min.css
+│       │       ├── index.html
+│       │       ├── precache-manifest.e4affc5c9aa6a411f03be436b6d71409.js
+│       │       ├── service-worker.js
+│       │       └── static
+│       │           └── js
+│       │               ├── 2.bd102428.chunk.js
+│       │               ├── 2.bd102428.chunk.js.LICENSE.txt
+│       │               ├── 2.bd102428.chunk.js.map
+│       │               ├── main.453cc1a2.chunk.js
+│       │               ├── main.453cc1a2.chunk.js.map
+│       │               ├── runtime-main.eab36c2e.js
+│       │               └── runtime-main.eab36c2e.js.map
+│       ├── test.py
+│       └── __init__.py
+└── tree.txt
