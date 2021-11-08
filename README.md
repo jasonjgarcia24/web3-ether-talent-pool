@@ -132,7 +132,7 @@ Currently just me :)<br>
 
 ***
 ## <a id="License">License</a>
-Each file included in this repository is licensed under the <a href="https://github.com/jasonjgarcia24/financial-planning-tools/blob/main/LICENSE" title="github.com/jasonjgarcia24/financial-planning-tools/blob/main/LICENSE">MIT License.</a>
+Each file included in this repository is licensed under the <a href="https://github.com/jasonjgarcia24/web3-ether-talent-pool/blob/e0f0508e2d1a41c32d608373a7d796601ee42daa/LICENSE" title="github.com/jasonjgarcia24/financial-planning-tools/blob/main/LICENSE">MIT License.</a>
 
 ***
 [Top of Page](#Top-of-Page)<br>
