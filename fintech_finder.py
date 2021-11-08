@@ -148,7 +148,7 @@ def get_people():
                 str=address,
                 lead_str="Ethereum Account Address:",
                 copy_str=address,
-                href=get_address_html(address),
+                href=get_address_html(address, condense=False, html=False),
                 key=f"{name}-{address}",
                 font_size="16px",
                 font_weight="none",
